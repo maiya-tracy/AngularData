@@ -1,11 +1,15 @@
-<!--The content below is only a placeholder and can be replaced.-->
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
 <div style="text-align:center">
   <h1>
     Welcome to {{ title }}!
   </h1>
   <img width="300" alt="Ninetales" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/38.png">
+
+  <div class="h3">All the tasks:</div>
+  <p *ngFor="let task of tasks">{{ task.title }}</p>
+
+  <div class="h3">The third task:</div>
+  <p>{{ tasks[2].title }}</p>
 </div>
-
-<ul>
-
-</ul>
