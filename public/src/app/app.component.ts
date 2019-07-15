@@ -10,7 +10,7 @@ export class AppComponent implements OnInit {
   title = 'the universe';
   constructor(private _httpService: HttpService) { }
   ngOnInit() {
-    this.getTasksFromService();
+
   }
   tasks = [];
   getTasksFromService() {
@@ -19,6 +19,31 @@ export class AppComponent implements OnInit {
       this.tasks = data.data;
     })
   }
+  info = [];
+  getInfoFromService(taskIndex: Number) {
+    this.info = this.tasks[taskIndex];
+  }
+  onButtonClick(): void {
+    console.log(`Click event is working`);
+    this.getTasksFromService();
+  }
+  onShowButtonClick(taskIndex: Number): void {
+    console.log(`Show Click event is working`);
+    this.getInfoFromService(taskIndex);
+  }
+  onButtonClickParam(num: Number): void {
+    console.log(`Click event is working with num param: ${num}`);
+    // call the service's method to post the data, but make sure the data is bundled up in an object!
+    let observable = this._httpService.postToServer({ title: "hello world title", description: "hello world", completed: true });
+    observable.subscribe(data => console.log("Got our data!", data));
+  }
+  onButtonClickParams(num: Number, str: String): void {
+    console.log(`Click event is working with num param: ${num} and str param: ${str}`);
+  }
+  onButtonClickEvent(event: any): void {
+    console.log(`Click event is working with event: ${event}`);
+  }
+
 }
 
 
