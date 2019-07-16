@@ -12,3 +12,9 @@ div {
 .outerdiv {
   border-color: lavender;
 }
+.divhidden {
+  border-color: white;
+}
+img {
+  max-width: 150px;
+}

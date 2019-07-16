@@ -7,21 +7,54 @@ import { HttpService } from './http.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  newTask: any;
   title = 'the universe';
   constructor(private _httpService: HttpService) { }
   ngOnInit() {
-
+    this.newTask = { title: "", description: "" }
   }
   tasks = [];
+  info = {};
+  current_task = {};
+  edit = false;
+  view_one = false;
+
+  onSubmit() {
+    // Code to send off the form data (this.newTask) to the Service
+    this._httpService.addTask(this.newTask).subscribe(data => {
+      console.log("added new task!", data);
+    // Reset this.newTask to a new, clean object.
+    this.newTask = { title: "", description: "" }
+    })
+    // getTasksFromService();
+  }
+
   getTasksFromService() {
     this._httpService.getTasks().subscribe(data => {
       console.log("Got our tasks!", data)
       this.tasks = data.data;
+      this.view_one = true;
     })
   }
-  info = [];
-  getInfoFromService(taskIndex: Number) {
-    this.info = this.tasks[taskIndex];
+
+  getInfoFromService(id: Number) {
+    console.log("confirmed")
+    this.info = this.tasks[id]
+  }
+  editInfoFromService(){
+    console.log("confirmed")
+    this._httpService.editTaskById(current_task.id, current_task).subscribe(data => {
+      console.log("Edited task!")
+    })
+    this.getTasksFromService()
+  }
+  deleteInfoFromService(id: Number){
+    console.log("confirmed")
+    this._httpService.deleteTaskById(id).subscribe(data => {
+      this.tasks = data.data;
+      console.log("deleted task!")
+    })
+    this.getTasksFromService()
   }
   onButtonClick(): void {
     console.log(`Click event is working`);
@@ -31,33 +64,13 @@ export class AppComponent implements OnInit {
     console.log(`Show Click event is working`);
     this.getInfoFromService(taskIndex);
   }
-  onButtonClickParam(num: Number): void {
-    console.log(`Click event is working with num param: ${num}`);
-    // call the service's method to post the data, but make sure the data is bundled up in an object!
-    let observable = this._httpService.postToServer({ title: "hello world title", description: "hello world", completed: true });
-    observable.subscribe(data => console.log("Got our data!", data));
+  onEditButtonClick(id: Number, taskIndex: Number): void {
+    console.log(`Edit Click event is working`);
+    this.edit = true;
+    this.current_task = this.tasks[taskIndex];
   }
-  onButtonClickParams(num: Number, str: String): void {
-    console.log(`Click event is working with num param: ${num} and str param: ${str}`);
+  onDeleteButtonClick(taskIndex: Number): void {
+    console.log(`Delete Click event is working`);
+    this.deleteInfoFromService(taskIndex);
   }
-  onButtonClickEvent(event: any): void {
-    console.log(`Click event is working with event: ${event}`);
-  }
-
 }
-
-
-// num: number;
-// randNum: number;
-// str: string;
-// first_name: string;
-// snacks: string[];
-// loggedIn: boolean;
-
-
-//   this.snacks = ["vanilla latte with skim milk", "brushed suede", "cookie"];
-//   this.loggedIn = true;
-//   this.num = 7;
-//   this.randNum = Math.floor((Math.random() * 2) + 1);
-//   this.str = 'Hello Angular Developer!';
-//   this.first_name = 'Alpha';

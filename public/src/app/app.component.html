@@ -7,17 +7,42 @@
   </h1>
   <img width="300" alt="Ninetales" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/38.png">
 
+  <form (submit)="onSubmit()">
+      <!-- use the json pipe to see how newTask changes in real time -->
+      <!-- <p> {{ newTask | json }} </p> -->
+      <input type="text" name="newTask.title" placeholder="title" [(ngModel)]="newTask.title" />
+      <input type="text" name="newTask.description" placeholder="description" [(ngModel)]="newTask.description" />
+      <input type="submit" value="Create Task" />
+  </form>
+
+
   <div class="div1">
     <button (click)="onButtonClick()">Click me to see all tasks!</button>
 
     <h3>All the tasks!</h3>
-    <p *ngFor="let task of tasks; let taskIndex = index">{{ task.title }}<button (click)="onShowButtonClick(taskIndex)">Show</button></p>
+    <div class="divhidden" *ngFor="let task of tasks, let index = index">
+      <p>{{ task.title }}</p>
+      <button (click)="onShowButtonClick(task._id)">Show</button>
+      <button (click)="onEditButtonClick(task._id, index)">Edit</button>
+      <button (click)="onDeleteButtonClick(task._id)">Delete</button>
+    </div>
   </div>
 
-  <div class="div2">
+  <div *ngIf="view_one" class="div2">
     <p>{{info.title}}</p>
     <p>{{info.description}}</p>
   </div>
+
+  <div *ngIf="edit" class="div2">
+    <form (submit)="editInfoFromService">
+      <input type="text" name="current_task.title" [(ngModel)]="current_task.title" />
+      <input type="text" name="current_task.description" [(ngModel)]="current_task.description" />
+      <input type="hidden" name="current_task.id" [(ngModel)]="current_task.id">
+      <input type="submit" value="Edit Task" />
+    </form>
+  </div>
+
+
 
 
 </div>
